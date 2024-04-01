@@ -16,6 +16,34 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with HomeMixin {
+  final ScrollController _scrollController = ScrollController();
+
+  // Seçili kategori indeksi
+  int _selectedCategoryIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    // Scroll kontrolcüsüne bir listener ekle
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  // Scroll olayını dinleyen metod
+  void _onScroll() {
+    // Scroll pozisyonunu kontrol edin ve buna göre kategori indeksini güncelleyin
+    setState(() {
+      _selectedCategoryIndex =
+          ((_scrollController.offset / MediaQuery.of(context).size.width)
+              .floor());
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,6 +87,7 @@ class _HomePageState extends State<HomePage> with HomeMixin {
         child: Container(
           color: ColorConstants.white,
           child: CustomScrollView(
+            controller: _scrollController,
             slivers: [
               //Bannner
               SliverToBoxAdapter(
@@ -78,12 +107,25 @@ class _HomePageState extends State<HomePage> with HomeMixin {
                         scrollDirection: Axis.horizontal,
                         itemCount: category.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 12.0),
-                            child: Center(
-                              child: TitleText(
-                                title: category[index],
-                                color: ColorConstants.black,
+                          return InkWell(
+                            borderRadius: BorderRadius.circular(12),
+                            onTap: () {
+                              _scrollController.animateTo(
+                                index * MediaQuery.of(context).size.width,
+                                duration: const Duration(milliseconds: 500),
+                                curve: Curves.easeInOut,
+                              );
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 12.0),
+                              child: Center(
+                                child: TitleText(
+                                  title: category[index],
+                                  color: _selectedCategoryIndex == index
+                                      ? ColorConstants
+                                          .black // Seçili kategori rengi
+                                      : Colors.grey,
+                                ),
                               ),
                             ),
                           );

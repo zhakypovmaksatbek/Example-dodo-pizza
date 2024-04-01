@@ -158,10 +158,9 @@ class _ContinuousImageAnimationState extends State<ContinuousImageAnimation>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 5), // Toplam animasyon süresi
+      duration: const Duration(seconds: 5),
     );
 
-    // İlk 5 saniye normal hızda ilerleyen animasyon
     final normalSpeedCurve =
         CurvedAnimation(parent: _controller, curve: const Interval(0, 0.5));
 
@@ -170,9 +169,7 @@ class _ContinuousImageAnimationState extends State<ContinuousImageAnimation>
       end: 1,
     ).animate(CurveTween(curve: Curves.linear).animate(normalSpeedCurve));
 
-    _controller.repeat(); // Animasyonu tekrar et
-
-    // Son 5 saniyede yavaşlayan animasyon
+    _controller.repeat();
     Future.delayed(const Duration(seconds: 8), () {
       _controller.stop();
     });
@@ -200,7 +197,7 @@ class _ContinuousImageAnimationState extends State<ContinuousImageAnimation>
               fit: BoxFit.cover,
               height: MediaQuery.of(context).size.height * .3,
               alignment: Alignment(-1 + 2 * _controller.value, 0),
-            ), // Hareket ettirilecek resim
+            ),
           );
         },
       ),

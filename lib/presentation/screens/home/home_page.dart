@@ -16,32 +16,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with HomeMixin {
-  final ScrollController _scrollController = ScrollController();
-
-  // Seçili kategori indeksi
-  int _selectedCategoryIndex = 0;
-
   @override
   void initState() {
     super.initState();
-    // Scroll kontrolcüsüne bir listener ekle
-    _scrollController.addListener(_onScroll);
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  // Scroll olayını dinleyen metod
-  void _onScroll() {
-    // Scroll pozisyonunu kontrol edin ve buna göre kategori indeksini güncelleyin
-    setState(() {
-      _selectedCategoryIndex =
-          ((_scrollController.offset / MediaQuery.of(context).size.width)
-              .floor());
-    });
+    scrollController.addListener(onScroll);
   }
 
   @override
@@ -87,7 +65,7 @@ class _HomePageState extends State<HomePage> with HomeMixin {
         child: Container(
           color: ColorConstants.white,
           child: CustomScrollView(
-            controller: _scrollController,
+            controller: scrollController,
             slivers: [
               //Bannner
               SliverToBoxAdapter(
@@ -110,7 +88,7 @@ class _HomePageState extends State<HomePage> with HomeMixin {
                           return InkWell(
                             borderRadius: BorderRadius.circular(12),
                             onTap: () {
-                              _scrollController.animateTo(
+                              scrollController.animateTo(
                                 index * MediaQuery.of(context).size.width,
                                 duration: const Duration(milliseconds: 500),
                                 curve: Curves.easeInOut,
@@ -121,9 +99,8 @@ class _HomePageState extends State<HomePage> with HomeMixin {
                               child: Center(
                                 child: TitleText(
                                   title: category[index],
-                                  color: _selectedCategoryIndex == index
-                                      ? ColorConstants
-                                          .black // Seçili kategori rengi
+                                  color: selectedCategoryIndex == index
+                                      ? ColorConstants.black
                                       : Colors.grey,
                                 ),
                               ),

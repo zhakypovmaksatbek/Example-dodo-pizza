@@ -10,8 +10,22 @@ mixin HomeMixin on State<HomePage> {
     "Dessert",
     "Milkshakes",
     "Coffee",
-    "Drinks",
-    "Goods",
     "Sauces",
   ];
+  final ScrollController scrollController = ScrollController();
+
+  int selectedCategoryIndex = 0;
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  void onScroll() {
+    setState(() {
+      selectedCategoryIndex =
+          ((scrollController.offset / MediaQuery.of(context).size.width)
+              .floor());
+    });
+  }
 }

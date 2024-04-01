@@ -16,18 +16,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with HomeMixin {
-  final List<String> category = [
-    "Ramazan",
-    "Pizza",
-    "Deals",
-    "Snacks",
-    "Dessert",
-    "Milkshakes",
-    "Coffee",
-    "Drinks",
-    "Goods",
-    "Sauces",
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,36 +65,38 @@ class _HomePageState extends State<HomePage> with HomeMixin {
                 child: BannerCard(),
               ),
               //Category
-              SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 50,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      IconButton(
-                          onPressed: () {}, icon: const Icon(Icons.search)),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * .85,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: category.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 12.0),
-                              child: Center(
-                                child: TitleText(
-                                  title: category[index],
-                                  color: ColorConstants.black,
-                                ),
+              SliverAppBar(
+                backgroundColor: ColorConstants.white,
+                surfaceTintColor: ColorConstants.white,
+                title: Row(
+                  children: [
+                    const Icon(Icons.search),
+                    SizedBox(
+                      height: 40,
+                      width: MediaQuery.of(context).size.width * .85,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: category.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 12.0),
+                            child: Center(
+                              child: TitleText(
+                                title: category[index],
+                                color: ColorConstants.black,
                               ),
-                            );
-                          },
-                        ),
+                            ),
+                          );
+                        },
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
+                floating: true,
+                pinned: true,
+                snap: true,
               ),
+
               //Product List
               SliverList.builder(
                 itemCount: ProductList.products.length,
